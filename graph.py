@@ -8,6 +8,7 @@ class Grafo:
   def __init__(self, vertices: Union[None, set], arestas: Union[None, set], direcionado: bool = True) -> None:
     self.vertices = vertices
     self.arestas = arestas
+    self.direcionado = direcionado
 
   def _verificaFormato(self, grafo: str) -> bool:
     # Extraindo o padrão do formato requerido
@@ -49,10 +50,21 @@ class Grafo:
     if self._verificaFormato(grafo):
       self.vertices, self.arestas = self._extrairValoresDoGrafo(grafo)
       grafoValido, verticesEstanhos = self._verificaArestasValidas(self.vertices, self.arestas)
+
+      # Verificamos se o grafo é válido
       if not grafoValido: 
         raise f"O grafo não é válido. Há arestas com vértices estranhos: {verticesEstanhos}"
+      
+      # Verifica direcionamento e, se for não direcionado, adiciona as arestas
+      if not self.direcionado:
+        aux = set()
+        for v1, v2 in self.arestas:
+          aux.add((v2, v1))
+        self.arestas = self.arestas.union(aux)
+
     else:
       raise f"Formato do arquivo incorreto."
+    
     
   def adicionaNo(self, vertice: int) -> None:
     if type(vertice) == int:
