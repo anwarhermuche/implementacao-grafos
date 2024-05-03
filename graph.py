@@ -10,6 +10,9 @@ class Grafo:
     self.arestas = arestas
     self.direcionado = direcionado
 
+  def __str__(self) -> str:
+    return f"Vértices: {self.vertices}\nArestas: {self.arestas}"
+
   def _verificaFormato(self, grafo: str) -> bool:
     # Extraindo o padrão do formato requerido
     padrao = r"V = \{\d+(?:,\d+)*\}; A = \{\(\d+,\d+\)(?:,\(\d+,\d+\))*\};"
@@ -65,15 +68,44 @@ class Grafo:
     else:
       raise SyntaxError(f"Formato do arquivo incorreto.")
     
-    
-  def adicionaNoh(self, vertice: int) -> None:
-    if type(vertice) == int:
-      self.vertices.add(vertice)
+  def adicionaVertice(self, vertice: int) -> None:
+    if vertice in self.vertices:
+      print(f"Vértice {vertice} já foi adicionado")
+    else:
+      if type(vertice) == int:
+        self.vertices.add(vertice)
+
+  def removeVertice(self, vertice: int) -> None:
+    if vertice not in self.vertices:
+      raise ValueError(f"Você não pode excluir um vértice que ainda não foi adicionado.")
+    self.vertices.remove(vertice)
+
+    excluirArestas = set()
+    for v1, v2 in self.arestas:
+      if vertice == v1 or vertice == v2:
+        excluirArestas.add((v1, v2))
+    self.arestas = self.arestas.difference(excluirArestas)
   
   def adicionaAresta(self, aresta: tuple[int, int]) -> None:
-    if type(aresta) == tuple:
-      if len(aresta) == 2 and type(aresta[0]) == int and type(aresta[1]) == int:
-        self.arestas.add(aresta)
+    if aresta in self.arestas:
+      print(f"Aresta {aresta} já foi adicionada.")
+    else:
+      if type(aresta) == tuple:
+        if len(aresta) == 2 and type(aresta[0]) == int and type(aresta[1]) == int:
+          self.arestas.add(aresta)
+          if not self.direcionado:
+            self.arestas.add((aresta[1], aresta[0]))
+        else:
+          raise ValueError("Apenas dois inteiros são válidos por tupla.")
+      else:
+        raise TypeError("As arestas precisam ser tuplas! Siga o formato (n1,n2), com n1 e n2 inteiros.")
+
+  def removeAresta(self, aresta: tuple[int, int]) -> None:
+    if aresta not in self.arestas:
+      raise ValueError(f"Você não pode excluir uma aresta que ainda não foi adicionada.")
+    self.vertices.remove(aresta)
+    if not self.direcionado:
+      self.vertices.remove((aresta[1], aresta[0]))
 
   def listaAdjacencia(self) -> dict:
     lista = {vertice: set() for vertice in self.vertices}

@@ -14,4 +14,12 @@ while opcao not in ["1", "2"]:
 
 grafo = Grafo(direcionado = opcao)
 grafo.lerArquivo("grafo.txt")
-print(grafo.listaAdjacencia())
+grafo.adicionaVertice(3)
+grafo.adicionaVertice(6)
+print(grafo)
+grafo.adicionaAresta((6, 1))
+print(grafo)
+grafo.adicionaAresta((2, 6))
+print(grafo)
+grafo.removeVertice((6))
+print(grafo)
