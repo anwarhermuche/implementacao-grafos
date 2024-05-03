@@ -5,14 +5,14 @@ from typing import Union
 # Criando a classe Grafo
 class Grafo:
 
-  def __init__(self, vertices: Union[None, set], arestas: Union[None, set], direcionado: bool = True) -> None:
+  def __init__(self, vertices: Union[None, set] = None, arestas: Union[None, set] = None, direcionado: bool = True) -> None:
     self.vertices = vertices
     self.arestas = arestas
     self.direcionado = direcionado
 
   def _verificaFormato(self, grafo: str) -> bool:
     # Extraindo o padrão do formato requerido
-    padrao = r"V = \{\d+(?:, \d+)*\}; A = \{\(\d+, \d+\)(?:, \(\d+, \d+\))*\};"
+    padrao = r"V = \{\d+(?:,\d+)*\}; A = \{\(\d+,\d+\)(?:,\(\d+,\d+\))*\};"
     return bool(re.match(padrao, grafo))
   
   def _extrairValoresDoGrafo(self, grafo: str) -> Union[None, tuple[set, set]]:
@@ -22,10 +22,10 @@ class Grafo:
     
     # Extrai os números para V
     numerosVertices = re.search(r"V = \{([^}]*)\}", grafo).group(1)
-    vertices = set(map(int, numerosVertices.split(", ")))
+    vertices = set(map(int, numerosVertices.split(",")))
 
     # Extrai as tuplas para A
-    tuplasArestas = re.findall(r"\((\d+), (\d+)\)", grafo)
+    tuplasArestas = re.findall(r"\((\d+),(\d+)\)", grafo)
     arestas = set((int(x), int(y)) for x, y in tuplasArestas)
 
     return vertices, arestas
@@ -53,7 +53,7 @@ class Grafo:
 
       # Verificamos se o grafo é válido
       if not grafoValido: 
-        raise f"O grafo não é válido. Há arestas com vértices estranhos: {verticesEstanhos}"
+        raise ValueError(f"O grafo não é válido. Há arestas com vértices estranhos: {verticesEstanhos}")
       
       # Verifica direcionamento e, se for não direcionado, adiciona as arestas
       if not self.direcionado:
@@ -63,10 +63,10 @@ class Grafo:
         self.arestas = self.arestas.union(aux)
 
     else:
-      raise f"Formato do arquivo incorreto."
+      raise SyntaxError(f"Formato do arquivo incorreto.")
     
     
-  def adicionaNo(self, vertice: int) -> None:
+  def adicionaNoh(self, vertice: int) -> None:
     if type(vertice) == int:
       self.vertices.add(vertice)
   
