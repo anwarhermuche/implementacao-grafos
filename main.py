@@ -1,5 +1,5 @@
 # Importando a classe Grafo
-from graph import Grafo
+from Grafo import Grafo
 
 # Inicializando o programa
 opcao = ""
