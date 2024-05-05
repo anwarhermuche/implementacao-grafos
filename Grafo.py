@@ -182,3 +182,12 @@ class Grafo:
     for v1, v2 in self.arestas:
       matriz[v1-1][v2-1] = 1
     return matriz
+
+  def DFS(self, verticeInicial: int, verticeFinal: int, visitado: dict = dict()):
+    if verticeInicial not in self.vertices or verticeFinal not in self.vertices:
+      # Verificando qual dos dois vértices (ou se os dois) não está(ão) no grafo. 
+      inicial = True if verticeInicial in self.vertices else False
+      final = True if verticeFinal in self.vertices else False
+      verticesNaoPertencentes = str(verticeFinal) if inicial and not final else str(verticeInicial) if not inicial and final else str(verticeInicial) + " e " + str(verticeFinal)
+        
+      raise ValueError(f"Os vértices devem pertencer ao grafo. {verticesNaoPertencentes} não está(ão) no grafo")
