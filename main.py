@@ -1,5 +1,7 @@
 # Importando a classe Grafo
 from Grafo import Grafo
+from Vertice import Vertice
+from Aresta import Aresta
 
 # Inicializando o programa
 opcao = ""
@@ -14,13 +16,6 @@ while opcao not in ["1", "2"]:
 
 grafo = Grafo(direcionado = opcao)
 grafo.lerArquivo("grafo.txt")
-grafo.adicionaVertice(3)
-grafo.adicionaVertice(6)
-print(grafo)
-grafo.adicionaAresta((6, 1))
-print(grafo)
-grafo.adicionaAresta((2, 6))
-print(grafo)
-grafo.removeVertice((6))
-print(grafo.listaAdjacencia())
-print(grafo.matrizAdjacencia())
+grafo.adicionaVertice(Vertice(9))
+grafo.adicionaAresta(Aresta(Vertice(9), Vertice(1)))
+grafo.removeVertice(Vertice(9))
